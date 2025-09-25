@@ -1,6 +1,6 @@
 // src/features/shows/showSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../api/axios'
+import axios from '../api/axios';
 
 // types/show.ts
 export type Show = {
@@ -19,16 +19,34 @@ export type Show = {
   userId?: number;
 };
 
-const initialState = { shows: [] as Show[], loading: false, error: null as string | null };
+// --- Updated initial state to hold pagination info ---
+interface ShowsState {
+  shows: {
+    data: Show[];
+    currentPage: number;
+    totalPages: number;
+  };
+  loading: boolean;
+  error: string | null;
+}
 
-export const fetchShows= createAsyncThunk('shows/fetchAll', async () => {
-  console.log("lsdjflsjdflsjflakjdf")
-  const res = await axios.get('/shows');
-  console.log("ldjf",res)
-  return res.data.data as Show[];
-});
+const initialState: ShowsState = {
+  shows: { data: [], currentPage: 1, totalPages: 1 },
+  loading: false,
+  error: null,
+};
+
+// --- fetchShows accepts page number now ---
+export const fetchShows = createAsyncThunk(
+  'shows/fetchAll',
+  async (page: number = 1) => {
+    const res = await axios.get(`/shows?page=${page}`);
+    return res.data as { data: Show[]; currentPage: number; totalPages: number };
+  }
+);
 
 export const fetchShow = createAsyncThunk('shows/fetchOne', async (id: number) => {
+  console.log("fetch one show")
   const res = await axios.get(`/shows/${id}`);
   return res.data.data as Show;
 });
@@ -44,15 +62,25 @@ const showSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchShows.pending, (s) => { s.loading = true; })
-      .addCase(fetchShows.fulfilled, (s, a) => { s.loading = false; s.shows = a.payload; })
-      .addCase(fetchShows.rejected, (s, a) => { s.loading = false; s.error = a.error.message || 'Error'; })
-      .addCase(fetchShow.fulfilled, (s, a) => {
-        const idx = s.shows.findIndex((x) => x.id === a.payload.id);
-        if (idx >= 0) s.shows[idx] = a.payload;
-        else s.shows.push(a.payload);
+      .addCase(fetchShows.pending, (state) => {
+        state.loading = true;
       })
-      .addCase(createShow.fulfilled, (s, a) => { s.shows.push(a.payload); });
+      .addCase(fetchShows.fulfilled, (state, action) => {
+        state.loading = false;
+        state.shows = action.payload; // now stores { data, currentPage, totalPages }
+      })
+      .addCase(fetchShows.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Error fetching shows';
+      })
+      .addCase(fetchShow.fulfilled, (state, action) => {
+        const idx = state.shows.data.findIndex((x) => x.id === action.payload.id);
+        if (idx >= 0) state.shows.data[idx] = action.payload;
+        else state.shows.data.push(action.payload);
+      })
+      .addCase(createShow.fulfilled, (state, action) => {
+        state.shows.data.push(action.payload);
+      });
   },
 });
 

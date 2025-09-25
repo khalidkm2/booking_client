@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+<!-- # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -51,7 +51,7 @@ export default defineConfig([
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
-      // Other configs...
+      Other configs...
       // Enable lint rules for React
       reactX.configs['recommended-typescript'],
       // Enable lint rules for React DOM
@@ -66,4 +66,11 @@ export default defineConfig([
     },
   },
 ])
-```
+``` -->
+
+
+
+//fixed cancel reservation ✅
+//pagination done ✅
+//fix style of passed shows
+// fix group cancellation in user interface
