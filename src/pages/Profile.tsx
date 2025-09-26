@@ -1,34 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { getReservations, cancelReservation } from "@/features/reservationSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Profile() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((s) => s.auth.user);
   const { reservations = [], loading } = useAppSelector((s) => s.reservations);
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedResList, setSelectedResList] = useState<any[]>([]);
+
   useEffect(() => {
-    if (user) {
-      dispatch(getReservations());
-    }
+    if (user) dispatch(getReservations());
   }, [user, dispatch]);
 
-  const handleCancelShow = (resList: any[]) => {
-    if (!resList.length) return;
-    const anyConfirmed = resList.some((r) => r.status === "CONFIRMED");
-    if (!anyConfirmed) return;
-
-    if (window.confirm("Are you sure you want to cancel all reservations for this show?")) {
-      const reservationId = resList[0].id;
-      dispatch(cancelReservation({ reservationId, userId: resList[0].userId }));
-    }
+  const openCancelModal = (resList: any[]) => {
+    setSelectedResList(resList);
+    setModalOpen(true);
   };
 
-  // ✅ Ensure reservations is an array
+  const confirmCancel = () => {
+    if (!selectedResList.length) return;
+    const reservationId = selectedResList[0].id;
+    dispatch(cancelReservation({ reservationId, userId: selectedResList[0].userId }));
+    setModalOpen(false);
+  };
+
   const groupedReservations = Array.isArray(reservations)
     ? reservations.reduce((acc: any, res: any) => {
         if (!acc[res.showId]) acc[res.showId] = [];
@@ -84,10 +86,7 @@ export default function Profile() {
                 <h3 className="text-xl font-semibold mb-1">{show.title}</h3>
                 <p className="text-sm mb-2 line-clamp-3">{show.description}</p>
                 <p className="text-sm font-medium mb-1">
-                  Date:{" "}
-                  {show.startingTime
-                    ? new Date(show.startingTime).toLocaleString()
-                    : "N/A"}
+                  Date: {show.startingTime ? new Date(show.startingTime).toLocaleString() : "N/A"}
                 </p>
                 <p className="text-sm mb-2">
                   Seats:{" "}
@@ -110,7 +109,7 @@ export default function Profile() {
                   <Link to={`/shows/${show.id}`} className="flex-1">
                     <Button
                       size="sm"
-                      className="w-full bg-yellow-900 hover:bg-yellow-800 text-yellow-50"
+                      className="w-full cursor-pointer bg-yellow-900 hover:bg-yellow-800 text-yellow-50"
                     >
                       View Show
                     </Button>
@@ -119,8 +118,8 @@ export default function Profile() {
                     <Button
                       size="sm"
                       variant="destructive"
-                      className="flex-1"
-                      onClick={() => handleCancelShow(resList)}
+                      className="flex-1 cursor-pointer"
+                      onClick={() => openCancelModal(resList)}
                     >
                       Cancel Reservation
                     </Button>
@@ -131,6 +130,45 @@ export default function Profile() {
           );
         })}
       </div>
+
+      {/* --- Cancel Confirmation Modal --- */}
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-yellow-50 rounded-2xl shadow-2xl p-6 max-w-md w-full text-yellow-900 border-2 border-yellow-900"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+            >
+              <h3 className="text-xl font-bold mb-4 text-center">Cancel Reservation</h3>
+              <p className="mb-6 text-center">
+                Are you sure you want to cancel all confirmed reservations for this show?
+              </p>
+              <div className="flex justify-center gap-4">
+                <Button
+                  className="bg-yellow-900 cursor-pointer hover:bg-yellow-800 text-yellow-50"
+                  onClick={confirmCancel}
+                >
+                  Yes, Cancel
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-yellow-900 cursor-pointer text-yellow-900 hover:bg-yellow-100"
+                  onClick={() => setModalOpen(false)}
+                >
+                  No, Keep
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

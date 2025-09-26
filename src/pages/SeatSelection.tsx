@@ -110,7 +110,7 @@ export default function SeatSelection() {
         <Button
           onClick={handleReserve}
           disabled={selectedSeats.length === 0 || loading} // ⬅️ disable button while loading
-          className="px-6 sm:px-8 py-2 sm:py-3 bg-yellow-900 hover:bg-yellow-800 text-yellow-50 rounded-lg shadow-lg font-semibold tracking-wide disabled:opacity-50"
+          className="px-6 sm:px-8 cursor-pointer py-2 sm:py-3 bg-yellow-900 hover:bg-yellow-800 text-yellow-50 rounded-lg shadow-lg font-semibold tracking-wide disabled:opacity-50"
         >
           {loading ? "🎟️ Reserving..." : `🎟️ Reserve Seats (${selectedSeats.length})`}
         </Button>

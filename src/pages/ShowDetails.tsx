@@ -98,7 +98,7 @@ export default function ShowDetails() {
               <Link to={`/shows/${show.id}/seats`}>
                 <Button
                   size="lg"
-                  className="w-full bg-[#b58900] hover:bg-[#d4a017] text-black"
+                  className="w-full cursor-pointer bg-[#b58900] hover:bg-[#d4a017] text-black"
                 >
                   Select Seats
                 </Button>
@@ -132,7 +132,7 @@ export default function ShowDetails() {
               <Link to={`/shows/${show.id}/seats`}>
                 <Button
                   size="lg"
-                  className="w-full md:w-auto bg-[#b58900] hover:bg-[#d4a017] text-black"
+                  className="w-full cursor-pointer md:w-auto bg-[#b58900] hover:bg-[#d4a017] text-black"
                 >
                   Book Now
                 </Button>
@@ -142,7 +142,7 @@ export default function ShowDetails() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full md:w-auto border-[#b58900] text-[#b58900] hover:bg-[#fff3c0]"
+                className="w-full cursor-pointer md:w-auto border-[#b58900] text-[#b58900] hover:bg-[#fff3c0]"
               >
                 Back to Shows
               </Button>

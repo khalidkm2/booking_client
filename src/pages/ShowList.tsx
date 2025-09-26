@@ -65,9 +65,9 @@ export function CarouselPlugin() {
 export default function ShowList() {
   const dispatch = useAppDispatch();
   const { shows, loading } = useAppSelector((s) => s.shows as any);
-// const allShows = shows?.data || [];
-const currentPage = shows?.currentPage || 1;
-const totalPages = shows?.totalPages || 1;
+  // const allShows = shows?.data || [];
+  const currentPage = shows?.currentPage || 1;
+  const totalPages = shows?.totalPages || 1;
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -123,9 +123,8 @@ const totalPages = shows?.totalPages || 1;
             <Button
               key={filter}
               onClick={() => setTimeFilter(filter)}
-              className={`${
-                timeFilter === filter ? "bg-[#d4af37] text-black" : "bg-[#2a2a2a] text-gray-300 hover:bg-[#3a3a3a]"
-              } border border-yellow-700 px-4 cursor-pointer py-2 rounded`}
+              className={`${timeFilter === filter ? "bg-[#d4af37] text-black" : "bg-[#2a2a2a] text-gray-300 hover:bg-[#3a3a3a]"
+                } border border-yellow-700 px-4 cursor-pointer py-2 rounded`}
             >
               {filter}
             </Button>
@@ -136,28 +135,42 @@ const totalPages = shows?.totalPages || 1;
       {/* Shows Grid */}
       <section >
         {/* {loading && <div className="col-span-full text-center text-gray-400">Loading...</div>} */}
-<motion.div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
-{filteredShows.map((show: any) => (
-          <Card
-            key={show.id}
-            className="bg-[#2a2a2a] cursor-pointer border border-yellow-700 overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1"
-          >
-            <img src={show.image} alt={show.title} className="w-full h-56 object-cover" />
-            <CardContent className="p-5">
-              <h3 className="text-xl font-bold text-[#d4af37] mb-2">{show.title}</h3>
-              <p className="text-gray-400 text-sm mb-3 line-clamp-3">{show.description}</p>
-              {/* <p className="text-gray-300 text-sm mb-1">{new Date(show.startingTime).toLocaleString()}</p> */}
-              <p className="text-gray-400 text-sm mb-4">🎭 {show.category}</p>
-              <Link to={`/shows/${show.id}`}>
-                <Button className="w-full cursor-pointer bg-[#d4af37] text-black hover:bg-yellow-500">
-                  Book Now
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ))}
-</motion.div>
-        
+        <motion.div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pb-16">
+          {filteredShows.map((show: any) => (
+            <Card
+              key={show.id}
+              className="bg-[#2a2a2a] cursor-pointer border border-yellow-700 overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col"
+            >
+              <img
+                src={show.image}
+                alt={show.title}
+                className="
+                w-full 
+                h-56 sm:h-64 md:h-72 
+                object-cover 
+                rounded-t-lg 
+                shadow-inner 
+                border-b border-yellow-700/30
+                transition-transform transform hover:scale-105
+              "
+              />
+              <CardContent className="p-5 flex flex-col flex-1 justify-between">
+                <div>
+                  <h3 className="text-xl font-bold text-[#d4af37] mb-2">{show.title}</h3>
+                  <p className="text-gray-400 text-sm mb-3 line-clamp-3">{show.description}</p>
+                  <p className="text-gray-400 text-sm mb-4">🎭 {show.category}</p>
+                </div>
+                <Link to={`/shows/${show.id}`} className="mt-4">
+                  <Button className="w-full cursor-pointer bg-[#d4af37] text-black hover:bg-yellow-500">
+                    Book Now
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </motion.div>
+
+
 
         {!loading && filteredShows.length === 0 && (
           <div className="col-span-full text-center text-gray-400 italic">There is no show at the moment.</div>
@@ -166,28 +179,28 @@ const totalPages = shows?.totalPages || 1;
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-  <div className="flex justify-center items-center gap-4 mb-16">
-    <Button
-      disabled={page <= 1}
-      onClick={() => setPage((p) => p - 1)}
-      className="bg-[#2a2a2a] text-gray-200 border border-yellow-700"
-    >
-      Prev
-    </Button>
+        <div className="flex justify-center items-center gap-4 mb-16">
+          <Button
+            disabled={page <= 1}
+            onClick={() => setPage((p) => p - 1)}
+            className="bg-[#2a2a2a] cursor-pointer text-gray-200 border border-yellow-700"
+          >
+            Prev
+          </Button>
 
-    <span className="text-black font-semibold">
-      Page {currentPage} of {totalPages}
-    </span>
+          <span className="text-black font-semibold">
+            Page {currentPage} of {totalPages}
+          </span>
 
-    <Button
-      disabled={page >= totalPages}
-      onClick={() => setPage((p) => p + 1)}
-      className="bg-[#2a2a2a] text-gray-200 border border-yellow-700"
-    >
-      Next
-    </Button>
-  </div>
-)}
+          <Button
+            disabled={page >= totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            className="bg-[#2a2a2a] cursor-pointer text-gray-200 border border-yellow-700"
+          >
+            Next
+          </Button>
+        </div>
+      )}
 
 
       {/* Footer */}

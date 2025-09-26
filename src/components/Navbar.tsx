@@ -31,14 +31,14 @@ export default function Navbar() {
           <div className="flex items-center space-x-6">
             <Link
               to={"/"}
-              className="text-2xl font-extrabold text-yellow-900 hover:text-yellow-800 transition tracking-wide"
+              className="text-2xl cursor-pointer font-extrabold text-yellow-900 hover:text-yellow-800 transition tracking-wide"
             >
               🎬 MoviePass
             </Link>
             {/* {user?.role !== "ADMIN" && ( */}
               <Link
                 to="/shows"
-                className="text-yellow-900 hover:text-yellow-700 transition font-medium"
+                className="text-yellow-900 cursor-pointer hover:text-yellow-700 transition font-medium"
               >
                 Shows
               </Link>
@@ -52,7 +52,7 @@ export default function Navbar() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="flex items-center gap-2 border-yellow-900 text-yellow-900 hover:bg-yellow-100"
+                    className="flex cursor-pointer items-center gap-2 border-yellow-900 text-yellow-900 hover:bg-yellow-100"
                   >
                     <UserCircle className="w-5 h-5" />
                     {user.name}
@@ -67,7 +67,7 @@ export default function Navbar() {
                   {/* Profile link for non-admin */}
                   {user.role !== "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <Link to="/profile" className="w-full text-yellow-900">
+                      <Link to="/profile" className="w-full cursor-pointer text-yellow-900">
                         Profile
                       </Link>
                     </DropdownMenuItem>
@@ -76,21 +76,21 @@ export default function Navbar() {
                   {/* Admin dashboard link for admins */}
                   {user.role === "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <Link to="/admin/create-show" className="w-full text-yellow-900 font-semibold">
+                      <Link to="/admin/create-show" className="w-full cursor-pointer text-yellow-900 font-semibold">
                         Add Show
                       </Link>
                     </DropdownMenuItem>
                   )}
                   {user.role === "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <Link to="/admin/dashboard" className="w-full text-yellow-900 font-semibold">
+                      <Link to="/admin/dashboard" className="w-full cursor-pointer text-yellow-900 font-semibold">
                         Admin Dashboard
                       </Link>
                     </DropdownMenuItem>
                   )}
 
                   <DropdownMenuSeparator className="bg-yellow-900/20" />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 font-medium">
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer font-medium">
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -99,13 +99,13 @@ export default function Navbar() {
               <>
                 <Link
                   to="/login"
-                  className="text-yellow-900 hover:text-yellow-700 transition font-medium"
+                  className="text-yellow-900 hover:text-yellow-700 cursor-pointer transition font-medium"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="text-yellow-900 hover:text-yellow-700 transition font-medium"
+                  className="text-yellow-900 hover:text-yellow-700 cursor-pointer transition font-medium"
                 >
                   Register
                 </Link>
