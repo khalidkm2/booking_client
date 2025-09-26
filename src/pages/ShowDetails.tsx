@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { useParams, Link } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { fetchShow, type Show } from "@/features/showSlice";

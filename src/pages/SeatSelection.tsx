@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchSeatsForShow, reserveSeats } from "../features/seatSlice";
