@@ -1,4 +1,4 @@
-import React, { type JSX } from 'react';
+import  { type JSX } from 'react';
 import { Navigate } from 'react-router';
 import { useAppSelector } from '../hooks/reduxHooks';
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { logout } from "@/features/authSlice";
 import { Link, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
