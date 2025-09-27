@@ -61,7 +61,6 @@ export function CarouselPlugin() {
   );
 }
 
-// --- ShowList Component with Pagination ---
 export default function ShowList() {
   const dispatch = useAppDispatch();
   const { shows, loading } = useAppSelector((s) => s.shows as any);
